@@ -5,8 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RaceReg"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        DataContext="{Binding Source={StaticResource Main}}">
     <StackPanel>
- 
+        <DataGrid ItemsSource="{Binding Participants}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}"/>
+                <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}"/>
+                <DataGridTextColumn Header="Affiliation" Binding="{Binding Affiliation.Abbreviation}"/>
+                <DataGridTextColumn Header="Birthdate" Binding="{Binding BirthDate}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </StackPanel>
 </Window>

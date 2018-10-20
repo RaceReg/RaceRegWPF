@@ -84,6 +84,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\DialogService.cs" />
+    <Compile Include="Helpers\IDialogService.cs" />
     <Compile Include="Model\Affiliation.cs" />
     <Compile Include="Model\Constants.cs" />
     <Compile Include="Model\Participant.cs" />
