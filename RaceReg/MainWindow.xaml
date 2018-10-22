@@ -7,6 +7,45 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         DataContext="{Binding Source={StaticResource Main}}">
+    <DockPanel>
+        <Ribbon DockPanel.Dock="Top">
+            <RibbonTab>
+                <RibbonGroup>
+                    
+                </RibbonGroup>
+            </RibbonTab>
+        </Ribbon>
+        <DockPanel>
+            <ToolBar DockPanel.Dock="Top">
+                <Button Content="Save Racer" />
+            </ToolBar>
+            <Grid DockPanel.Dock="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="First Name:" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="Last Name:" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="0" Grid.Row="2" Text="Affiliation:" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="0" Grid.Row="3" Text="Date of Birth:" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="0" Grid.Row="4" Text="Gender:" HorizontalAlignment="Center"/>
+            </Grid>
+            <DataGrid ItemsSource="{Binding Participants}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Affiliation" Binding="{Binding Affiliation.Abbreviation}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </DockPanel>
+    <!--
     <StackPanel>
         <DataGrid ItemsSource="{Binding Participants}" AutoGenerateColumns="False">
             <DataGrid.Columns>
@@ -18,4 +57,5 @@
             </DataGrid.Columns>
         </DataGrid>
     </StackPanel>
+    -->
 </Window>

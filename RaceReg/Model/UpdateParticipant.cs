@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RaceReg.Model
 {
-    public class UpdateParticipant : UpdateParticipantService
+    public class UpdateParticipant : IUpdateParticipantService
     {
         public async Task<IEnumerable<Participant>> Refresh()
         {
@@ -19,38 +19,38 @@ namespace RaceReg.Model
             using (var connection = new MySqlConnection(Constants.CONNECTION_STRING))
             {
                 await connection.OpenAsync();
-                var cmd = new MySqlCommand(getAffiliationsQuery, connection);
-                var reader = await cmd.ExecuteReaderAsync();
-                while (await reader.ReadAsync())
-                {
-                    Affiliation temp = new Affiliation();
-                    temp.Id = reader.GetInt32(0);
-                    temp.Name = reader.GetString(1);
-                    temp.Abbreviation = reader.GetString(2);
-                    affiliations.Add(temp);
-                }
-
-                cmd = new MySqlCommand(getParticipantsQuery, connection);
-                reader = await cmd.ExecuteReaderAsync();
-                while (await reader.ReadAsync())
-                {
-                    Participant temp = new Participant();
-                    temp.Id = reader.GetInt32(0);
-                    temp.FirstName = reader.GetString(1);
-                    temp.LastName = reader.GetString(2);
-                    int affId = reader.GetInt32(3);
-                    foreach (Affiliation tempAffiliation in affiliations)
+                using (var cmd = new MySqlCommand(getAffiliationsQuery, connection))
+                using (var reader = await cmd.ExecuteReaderAsync())
+                    while (await reader.ReadAsync())
                     {
-                        if (tempAffiliation.Id == affId)
-                        {
-                            temp.Affiliation = tempAffiliation;
-                            break;
-                        }
+                        Affiliation temp = new Affiliation();
+                        temp.Id = reader.GetInt32(0);
+                        temp.Name = reader.GetString(1);
+                        temp.Abbreviation = reader.GetString(2);
+                        affiliations.Add(temp);
                     }
-                    temp.Gender = reader.GetString(4);
-                    temp.BirthDate = reader.GetDateTime(5);
-                    participants.Add(temp);
-                }
+
+                using (var cmd = new MySqlCommand(getParticipantsQuery, connection))
+                using (var reader = await cmd.ExecuteReaderAsync())
+                    while (await reader.ReadAsync())
+                    {
+                        Participant temp = new Participant();
+                        temp.Id = reader.GetInt32(0);
+                        temp.FirstName = reader.GetString(1);
+                        temp.LastName = reader.GetString(2);
+                        int affId = reader.GetInt32(3);
+                        foreach (Affiliation tempAffiliation in affiliations)
+                        {
+                            if (tempAffiliation.Id == affId)
+                            {
+                                temp.Affiliation = tempAffiliation;
+                                break;
+                            }
+                        }
+                        temp.Gender = reader.GetString(4);
+                        temp.BirthDate = reader.GetDateTime(5);
+                        participants.Add(temp);
+                    }
             }
 
             return participants;

@@ -21,7 +21,7 @@ namespace RaceReg.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private UpdateParticipantService _updateParticipantService;
+        private IUpdateParticipantService _updateParticipantService;
         private IDialogService _dialogService;
 
         public ObservableCollection<Participant> Participants
@@ -78,7 +78,7 @@ namespace RaceReg.ViewModel
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel(UpdateParticipantService updateParticipantService, 
+        public MainViewModel(IUpdateParticipantService updateParticipantService, 
             IDialogService dialogService)
         {
             ////if (IsInDesignMode)
@@ -92,6 +92,8 @@ namespace RaceReg.ViewModel
 
             _updateParticipantService = updateParticipantService;
             _dialogService = dialogService;
+
+            Participants = new ObservableCollection<Participant>( _updateParticipantService.Refresh().Result);
         }
 
         //Default constructor
