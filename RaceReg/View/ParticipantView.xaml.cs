@@ -17,7 +17,7 @@ namespace RaceReg.View
     /// <summary>
     /// Interaction logic for ParticipantView.xaml
     /// </summary>
-    public partial class ParticipantView : Window
+    public partial class ParticipantView : UserControl
     {
         public ParticipantView()
         {

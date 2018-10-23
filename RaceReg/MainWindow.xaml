@@ -7,25 +7,44 @@
         xmlns:vm="clr-namespace:RaceReg.ViewModel"
         xmlns:view="clr-namespace:RaceReg.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" Height="680" Width="800"
         DataContext="{Binding Source={StaticResource Main}}">
     <DockPanel>
         <Ribbon DockPanel.Dock="Top">
-            <RibbonTab Header="Home">
+           
+           <RibbonTab Header="Home">
+                <RibbonGroup Header="Meets">
+                    <RibbonButton Label="Add Meet"
+                                  LargeImageSource="/Resources/track-corner-add.png"
+                                  ToolTipTitle="Add Meet Editor Screen."
+                                  ToolTipDescription="Add a new tab to create new meet."
+                                  Command="{Binding AddParticipantView}"/>
+                    <RibbonButton Label="View Meets"
+                                  LargeImageSource="/Resources/track-corner.png"
+                                  ToolTipTitle="Add Meet View Screen."
+                                  ToolTipDescription="Add a new tab to view meets."
+                                  Command="{Binding AddParticipantView}"/>
+                </RibbonGroup>
                 <RibbonGroup Header="Participants">
-                    <RibbonButton Label="View Meet Participants"
+                    <RibbonButton Label="Add Participant"
+                                  LargeImageSource="/Resources/femalerunner-add.png"
+                                  ToolTipTitle="Add Participant Editor Screen."
+                                  ToolTipDescription="Add a new tab to create new participant."
+                                  Command="{Binding AddParticipantView}"/>
+                    <RibbonButton Label="View Participants"
                                   LargeImageSource="/Resources/femalerunner.png"
                                   ToolTipTitle="Add Participant View Screen."
                                   ToolTipDescription="Add a new tab to view meet participants."
                                   Command="{Binding AddParticipantView}"/>
-                    <RibbonButton Label="Add Participant"
-                                  LargeImageSource="/Resources/addicon.png"
-                                  ToolTipTitle="Add Participant Editor Screen."
-                                  ToolTipDescription="Add a new tab to create new participant."
-                                  Command="{Binding AddParticipantView}"/>
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem Content="RaceReg Registration" />
+            <Separator></Separator>
+            <StatusBarItem Content="{Binding StatusMessage}" />
+        </StatusBar>
 
         <TabControl ItemsSource="{Binding ChildViewModels}" SelectedItem="{Binding SelectedChildViewModel}">
             <TabControl.ItemTemplate>
@@ -45,11 +64,7 @@
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
-        
-        <StatusBar DockPanel.Dock="Bottom">
-            <StatusBarItem Content="{Binding StatusMessage}" />
-            <StatusBarItem Content="Test" />
-        </StatusBar>
+
     </DockPanel>
     <!--
     <StackPanel>

@@ -89,10 +89,9 @@
     <Compile Include="Helpers\IDialogService.cs" />
     <Compile Include="Model\Affiliation.cs" />
     <Compile Include="Model\Constants.cs" />
-    <Compile Include="Model\IRaceRegDB.cs" />
     <Compile Include="Model\Participant.cs" />
-    <Compile Include="Model\UpdateParticipant.cs" />
-    <Compile Include="Model\IUpdateParticipantService.cs" />
+    <Compile Include="Model\Database.cs" />
+    <Compile Include="Model\IRaceRegDB.cs" />
     <Compile Include="ViewModel\ChildControl.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ParticipantViewModel.cs" />
@@ -112,6 +111,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ParticipantView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -151,6 +154,21 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\addicon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\track-corner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\track-corner-add.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\femalerunner-add.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

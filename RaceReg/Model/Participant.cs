@@ -9,6 +9,20 @@ namespace RaceReg.Model
 {
     public class Participant : INotifyPropertyChanged
     {
+        public Dictionary<string, string> errors = new Dictionary<string, string>();
+
+        public string Error => throw new NotImplementedException();
+        public string this[string columnName] => errors.ContainsKey(columnName) ? errors[columnName] : null;
+
+        public enum GenderType { Male, Female, Other };
+        public IEnumerable<GenderType> GenderTypes
+        {
+            get
+            {
+                return Enum.GetValues(typeof(GenderType)).Cast<GenderType>().ToList<GenderType>();
+            }
+        }
+
         private int _id;
         private string _firstName;
         private string _lastName;
@@ -115,6 +129,90 @@ namespace RaceReg.Model
 
                 _birthDate = value;
                 RaisePropertyChanged("BirthDate");
+            }
+        }
+
+        //VALIDATION
+        private bool isValid;
+        public bool IsValid
+        {
+            get
+            {
+                return isValid;
+            }
+            set
+            {
+                isValid = value;
+                RaisePropertyChanged(nameof(IsValid));
+            }
+        }
+
+        private void setValid()
+        {
+            bool fN = ValidateFirstName();
+            bool lN = ValidateLastName();
+            bool aG = ValidateBirthDate();
+            bool gD = ValidateGender();
+
+
+            IsValid = fN && lN && aG && gD;
+        }
+
+        private bool ValidateFirstName()
+        {
+            if (FirstName == null || FirstName.Equals(String.Empty) || FirstName.Any(Char.IsWhiteSpace))
+            {
+                errors[nameof(FirstName)] = "First name must contain no spaces, and cannot be empty.";
+                return false;
+            }
+            else
+            {
+                errors[nameof(FirstName)] = null;
+                return true;
+            }
+        }
+
+        private bool ValidateLastName()
+        {
+            if (LastName == null || LastName.Equals(String.Empty) || LastName.Any(Char.IsWhiteSpace))
+            {
+                errors[nameof(LastName)] = "Last name must contain no spaces, and cannot be empty.";
+                return false;
+            }
+            else
+            {
+                errors[nameof(LastName)] = null;
+                return true;
+            }
+        }
+
+        private bool ValidateBirthDate()
+        {
+            //if (Age < 1 || Age > 150)
+            //{
+            //    errors[nameof(Age)] = "Age must be between 1 and 150.";
+            //    return false;
+            //}
+            //else
+            //{
+            //    errors[nameof(Age)] = null;
+            //    return true;
+            //}
+
+            return true;
+        }
+
+        private bool ValidateGender()
+        {
+            if (!Enum.IsDefined(typeof(GenderType), Gender))
+            {
+                errors[nameof(Gender)] = "Gender must be Male, Female or Other.";
+                return false;
+            }
+            else
+            {
+                errors[nameof(Gender)] = null;
+                return true;
             }
         }
 

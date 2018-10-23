@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace RaceReg.Model
 {
-    public interface IUpdateParticipantService
+    public interface IRaceRegDB
     {
-        Task<IEnumerable<Participant>> Refresh();
+        Task<IEnumerable<Participant>> RefreshAffiliations();
         Task<string> Save(Participant updatedParticipant);
     }
 }

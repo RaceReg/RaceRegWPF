@@ -7,29 +7,16 @@ using System.Threading.Tasks;
 
 namespace RaceReg.Model
 {
-    public class UpdateParticipant : IUpdateParticipantService
+    public class Database : IRaceRegDB
     {
-        public async Task<IEnumerable<Participant>> Refresh()
+        public async Task<IEnumerable<Participant>> RefreshParticipants()
         {
-            List<Affiliation> affiliations = new List<Affiliation>();
+            IEnumerable<Affiliation> affiliations = await RefreshAffiliations();
             List<Participant> participants = new List<Participant>();
-            string getAffiliationsQuery = "SELECT * FROM " + Constants.AFFILIATION + " WHERE active = 1;";
             string getParticipantsQuery = "SELECT * FROM " + Constants.PARTICIPANT + " WHERE active = 1;";
 
             using (var connection = new MySqlConnection(Constants.CONNECTION_STRING))
             {
-                await connection.OpenAsync();
-                using (var cmd = new MySqlCommand(getAffiliationsQuery, connection))
-                using (var reader = await cmd.ExecuteReaderAsync())
-                    while (await reader.ReadAsync())
-                    {
-                        Affiliation temp = new Affiliation();
-                        temp.Id = reader.GetInt32(0);
-                        temp.Name = reader.GetString(1);
-                        temp.Abbreviation = reader.GetString(2);
-                        affiliations.Add(temp);
-                    }
-
                 using (var cmd = new MySqlCommand(getParticipantsQuery, connection))
                 using (var reader = await cmd.ExecuteReaderAsync())
                     while (await reader.ReadAsync())
@@ -54,6 +41,29 @@ namespace RaceReg.Model
             }
 
             return participants;
+        }
+
+        public async Task<IEnumerable<Affiliation>> RefreshAffiliations()
+        {
+            List<Affiliation> affiliations = new List<Affiliation>();
+            string getAffiliationsQuery = "SELECT * FROM " + Constants.AFFILIATION + " WHERE active = 1;";
+
+            using (var connection = new MySqlConnection(Constants.CONNECTION_STRING))
+            {
+                await connection.OpenAsync();
+                using (var cmd = new MySqlCommand(getAffiliationsQuery, connection))
+                using (var reader = await cmd.ExecuteReaderAsync())
+                    while (await reader.ReadAsync())
+                    {
+                        Affiliation temp = new Affiliation();
+                        temp.Id = reader.GetInt32(0);
+                        temp.Name = reader.GetString(1);
+                        temp.Abbreviation = reader.GetString(2);
+                        affiliations.Add(temp);
+                    }
+            }
+
+            return affiliations;
         }
 
         public async Task<string> Save(Participant updatedParticipant)

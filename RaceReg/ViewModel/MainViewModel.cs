@@ -5,6 +5,7 @@ using RaceReg.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -24,13 +25,13 @@ namespace RaceReg.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private IUpdateParticipantService _updateParticipantService;
+        private IRaceRegDB _updateParticipantService;
         private IDialogService _dialogService;
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel(IUpdateParticipantService updateParticipantService,
+        public MainViewModel(IRaceRegDB updateParticipantService,
             IDialogService dialogService)
         {
             ////if (IsInDesignMode)
@@ -47,11 +48,12 @@ namespace RaceReg.ViewModel
             _updateParticipantService = updateParticipantService;
             _dialogService = dialogService;
 
-            Participants = new ObservableCollection<Participant>(_updateParticipantService.Refresh().Result);
+            Affiliations = new ObservableCollection<Affiliation>(_updateParticipantService.RefreshAffiliations().Result);
+            Participants = new ObservableCollection<Participant>(_updateParticipantService.RefreshParticipants().Result);
         }
 
         //Default constructor
-        public MainViewModel() : this(new UpdateParticipant(), new DialogService()) { }
+        public MainViewModel() : this(new Database(), new DialogService()) { }
 
         private ObservableCollection<ChildControl> childViewModels;
         public ObservableCollection<ChildControl> ChildViewModels
@@ -62,7 +64,20 @@ namespace RaceReg.ViewModel
             }
             set
             {
-                SetField(ref childViewModels, value);
+                Set(ref childViewModels, value);
+            }
+        }
+
+        private ChildControl selectedChildViewModel;
+        public ChildControl SelectedChildViewModel
+        {
+            get
+            {
+                return selectedChildViewModel;
+            }
+            set
+            {
+                Set(ref selectedChildViewModel, value);
             }
         }
 
@@ -71,6 +86,7 @@ namespace RaceReg.ViewModel
             () =>
             {
                 ChildViewModels.Add(new ChildControl("Participant Editor", new ParticipantViewModel()));
+                selectedChildViewModel = ChildViewModels.Last();
             }
             ));
 
@@ -81,13 +97,17 @@ namespace RaceReg.ViewModel
 
 
 
-
+        public ObservableCollection<Affiliation> Affiliations
+        {
+            get;
+            set;
+        }
 
 
         public ObservableCollection<Participant> Participants
         {
             get;
-            private set;
+            set;
         }
 
         private Participant _selectedParticipant;
@@ -123,11 +143,13 @@ namespace RaceReg.ViewModel
             }
         }
 
+       
+
         private async Task Refresh()
         {
             Participants.Clear();
 
-            var participants = await _updateParticipantService.Refresh();
+            var participants = await _updateParticipantService.RefreshAffiliations();
 
             foreach(var participant in participants)
             {
@@ -135,21 +157,21 @@ namespace RaceReg.ViewModel
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        //public event PropertyChangedEventHandler PropertyChanged;
+        //protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
 
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
-        {
-            if(EqualityComparer<T>.Default.Equals(field, value))
-            {
-                return false;
-            }
-            field = value;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
+        //protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        //{
+        //    if(EqualityComparer<T>.Default.Equals(field, value))
+        //    {
+        //        return false;
+        //    }
+        //    field = value;
+        //    OnPropertyChanged(propertyName);
+        //    return true;
+        //}
     }
 }
