@@ -24,7 +24,8 @@ namespace Tests
 
             for(int i = 0; i < 6; i++)
             {
-                temp.Abbreviation = 'a' +  'b' + 'c' + "";
+                temp.Abbreviation = "a" + "b" + "c" + "";
+                affiliations.Add(temp);
             }
 
             return affiliations;

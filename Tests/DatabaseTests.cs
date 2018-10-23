@@ -17,7 +17,7 @@ namespace Tests
         {
             IRaceRegDB testDB = new TestDatabase();
 
-            Affiliations = new ObservableCollection<Affiliation>(testDB.RefreshAffiliations());
+            Affiliations = new ObservableCollection<Affiliation>(testDB.RefreshAffiliations().Result);
 
             string result = "";
 
@@ -26,7 +26,7 @@ namespace Tests
                 result += Affiliations[i].Abbreviation + "\n";
             }
 
-            Assert.AreEqual(true, result);
+            Assert.AreEqual("abc\nabc\nabc\nabc\nabc\nabc\n", result);
         }
     }
 }
