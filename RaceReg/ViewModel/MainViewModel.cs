@@ -2,7 +2,10 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using RaceReg.Helpers;
 using RaceReg.Model;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace RaceReg.ViewModel
@@ -23,6 +26,63 @@ namespace RaceReg.ViewModel
     {
         private IUpdateParticipantService _updateParticipantService;
         private IDialogService _dialogService;
+
+        /// <summary>
+        /// Initializes a new instance of the MainViewModel class.
+        /// </summary>
+        public MainViewModel(IUpdateParticipantService updateParticipantService,
+            IDialogService dialogService)
+        {
+            ////if (IsInDesignMode)
+            ////{
+            ////    // Code runs in Blend --> create design time data.
+            ////}
+            ////else
+            ////{
+            ////    // Code runs "for real"
+            ////}
+
+            ChildViewModels = new ObservableCollection<ChildControl>();
+
+            _updateParticipantService = updateParticipantService;
+            _dialogService = dialogService;
+
+            Participants = new ObservableCollection<Participant>(_updateParticipantService.Refresh().Result);
+        }
+
+        //Default constructor
+        public MainViewModel() : this(new UpdateParticipant(), new DialogService()) { }
+
+        private ObservableCollection<ChildControl> childViewModels;
+        public ObservableCollection<ChildControl> ChildViewModels
+        {
+            get
+            {
+                return childViewModels;
+            }
+            set
+            {
+                SetField(ref childViewModels, value);
+            }
+        }
+
+        private RelayCommand addParticipantView;
+        public RelayCommand AddParticipantView => addParticipantView ?? (addParticipantView = new RelayCommand(
+            () =>
+            {
+                ChildViewModels.Add(new ChildControl("Participant Editor", new ParticipantViewModel()));
+            }
+            ));
+
+
+
+
+
+
+
+
+
+
 
         public ObservableCollection<Participant> Participants
         {
@@ -75,28 +135,21 @@ namespace RaceReg.ViewModel
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
-        public MainViewModel(IUpdateParticipantService updateParticipantService, 
-            IDialogService dialogService)
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
-
-            _updateParticipantService = updateParticipantService;
-            _dialogService = dialogService;
-
-            Participants = new ObservableCollection<Participant>( _updateParticipantService.Refresh().Result);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        //Default constructor
-        public MainViewModel() : this(new UpdateParticipant(), new DialogService()) { }
+        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if(EqualityComparer<T>.Default.Equals(field, value))
+            {
+                return false;
+            }
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
     }
 }

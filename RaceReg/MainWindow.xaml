@@ -4,18 +4,69 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RaceReg"
+        xmlns:vm="clr-namespace:RaceReg.ViewModel"
+        xmlns:view="clr-namespace:RaceReg.View"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         DataContext="{Binding Source={StaticResource Main}}">
     <DockPanel>
         <Ribbon DockPanel.Dock="Top">
-            <RibbonTab>
-                <RibbonGroup>
-                    
+            <RibbonTab Header="Home">
+                <RibbonGroup Header="Participants">
+                    <RibbonButton Label="View Meet Participants"
+                                  LargeImageSource="/Resources/femalerunner.png"
+                                  ToolTipTitle="Add Participant View Screen."
+                                  ToolTipDescription="Add a new tab to view meet participants."
+                                  Command="{Binding AddParticipantView}"/>
+                    <RibbonButton Label="Add Participant"
+                                  LargeImageSource="/Resources/addicon.png"
+                                  ToolTipTitle="Add Participant Editor Screen."
+                                  ToolTipDescription="Add a new tab to create new participant."
+                                  Command="{Binding AddParticipantView}"/>
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>
-        <DockPanel>
+
+        <TabControl ItemsSource="{Binding ChildViewModels}" SelectedItem="{Binding SelectedChildViewModel}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Header}" />
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <ContentControl Content="{Binding ViewModel}">
+                        <ContentControl.Resources>
+                            <DataTemplate DataType="{x:Type vm:ParticipantViewModel}">
+                                <view:ParticipantView />
+                            </DataTemplate>
+                        </ContentControl.Resources>
+                    </ContentControl>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+        
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem Content="{Binding StatusMessage}" />
+            <StatusBarItem Content="Test" />
+        </StatusBar>
+    </DockPanel>
+    <!--
+    <StackPanel>
+        <DataGrid ItemsSource="{Binding Participants}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}"/>
+                <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}"/>
+                <DataGridTextColumn Header="Affiliation" Binding="{Binding Affiliation.Abbreviation}"/>
+                <DataGridTextColumn Header="Birthdate" Binding="{Binding BirthDate}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
+    -->
+    
+    <!--
+    <DockPanel>
             <ToolBar DockPanel.Dock="Top">
                 <Button Content="Save Racer" />
             </ToolBar>
@@ -48,18 +99,5 @@
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
-    </DockPanel>
-    <!--
-    <StackPanel>
-        <DataGrid ItemsSource="{Binding Participants}" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
-                <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}"/>
-                <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}"/>
-                <DataGridTextColumn Header="Affiliation" Binding="{Binding Affiliation.Abbreviation}"/>
-                <DataGridTextColumn Header="Birthdate" Binding="{Binding BirthDate}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-    </StackPanel>
     -->
 </Window>
