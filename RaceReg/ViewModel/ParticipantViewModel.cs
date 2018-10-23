@@ -23,6 +23,7 @@ namespace RaceReg.ViewModel
                 Set(ref participant, value);
             }
         }
+
         public ObservableCollection<Affiliation> affiliations;
         public ObservableCollection<Affiliation> Affiliations
         {
@@ -47,7 +48,7 @@ namespace RaceReg.ViewModel
 
         public ParticipantViewModel()
         {
-            
+            Participant = new Participant();
         }
     }
 }

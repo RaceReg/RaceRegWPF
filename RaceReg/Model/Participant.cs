@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RaceReg.Model
 {
-    public class Participant : INotifyPropertyChanged
+    public class Participant : ObservableObject, INotifyPropertyChanged, IDataErrorInfo
     {
         public Dictionary<string, string> errors = new Dictionary<string, string>();
 
@@ -27,59 +28,22 @@ namespace RaceReg.Model
         private string _firstName;
         private string _lastName;
         private Affiliation _affiliation;
-        private string _gender;
+        private GenderType _gender;
         private DateTime _birthDate;
-
-        public int Id {
+        
+        public int Id
+        {
             get
             {
                 return _id;
             }
             set
             {
-                if(_id == value)
-                {
-                    return;
-                }
-
-                _id = value;
-                RaisePropertyChanged("Id");
+                Set(ref _id, value);
+                setValid();
             }
         }
-        public string FirstName
-        {
-            get
-            {
-                return _firstName;
-            }
-            set
-            {
-                if (string.Equals(_firstName, value))
-                {
-                    return;
-                }
 
-                _firstName = value;
-                RaisePropertyChanged("FirstName");
-            }
-        }
-        public string LastName
-        {
-            get
-            {
-                return _lastName;
-            }
-            set
-            {
-                if (string.Equals(_lastName, value))
-                {
-                    return;
-                }
-
-                _lastName = value;
-                RaisePropertyChanged("LastName");
-            }
-        }
         public Affiliation Affiliation
         {
             get
@@ -88,32 +52,37 @@ namespace RaceReg.Model
             }
             set
             {
-                if (_affiliation == value)
-                {
-                    return;
-                }
-
-                _affiliation = value;
-                RaisePropertyChanged("Affiliation");
+                Set(ref _affiliation, value);
+                setValid();
             }
         }
-        public string Gender
+
+        public String FirstName
         {
             get
             {
-                return _gender;
+                return _firstName;
             }
             set
             {
-                if (string.Equals(_gender, value))
-                {
-                    return;
-                }
-
-                _gender = value;
-                RaisePropertyChanged("Gender");
+                Set(ref _firstName, value);
+                setValid();
             }
         }
+
+        public String LastName
+        {
+            get
+            {
+                return _lastName;
+            }
+            set
+            {
+                Set(ref _lastName, value);
+                setValid();
+            }
+        }
+
         public DateTime BirthDate
         {
             get
@@ -122,13 +91,21 @@ namespace RaceReg.Model
             }
             set
             {
-                if (_birthDate == value)
-                {
-                    return;
-                }
+                Set(ref _birthDate, value);
+                setValid();
+            }
+        }
 
-                _birthDate = value;
-                RaisePropertyChanged("BirthDate");
+        public GenderType Gender
+        {
+            get
+            {
+                return _gender;
+            }
+            set
+            {
+                Set(ref _gender, value);
+                setValid();
             }
         }
 
@@ -152,10 +129,9 @@ namespace RaceReg.Model
             bool fN = ValidateFirstName();
             bool lN = ValidateLastName();
             bool aG = ValidateBirthDate();
-            bool gD = ValidateGender();
 
 
-            IsValid = fN && lN && aG && gD;
+            IsValid = fN && lN && aG;
         }
 
         private bool ValidateFirstName()
@@ -188,33 +164,19 @@ namespace RaceReg.Model
 
         private bool ValidateBirthDate()
         {
-            //if (Age < 1 || Age > 150)
-            //{
-            //    errors[nameof(Age)] = "Age must be between 1 and 150.";
-            //    return false;
-            //}
-            //else
-            //{
-            //    errors[nameof(Age)] = null;
-            //    return true;
-            //}
-
-            return true;
-        }
-
-        private bool ValidateGender()
-        {
-            if (!Enum.IsDefined(typeof(GenderType), Gender))
+            var age = DateTime.Today.Year - BirthDate.Year;
+            if (age < 1 || age > 150)
             {
-                errors[nameof(Gender)] = "Gender must be Male, Female or Other.";
+                errors[nameof(age)] = "Age must be between 1 and 150.";
                 return false;
             }
             else
             {
-                errors[nameof(Gender)] = null;
+                errors[nameof(age)] = null;
                 return true;
             }
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

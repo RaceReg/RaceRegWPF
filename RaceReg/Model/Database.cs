@@ -37,7 +37,21 @@ namespace RaceReg.Model
                                 break;
                             }
                         }
-                        temp.Gender = reader.GetString(4);
+
+                        var genderChar = reader.GetString(4);
+                        if(String.Equals(genderChar, "m"))
+                        {
+                            temp.Gender = Participant.GenderType.Male;
+                        }
+                        else if(String.Equals(genderChar, "f"))
+                        {
+                            temp.Gender = Participant.GenderType.Male;
+                        }
+                        else
+                        {
+                            temp.Gender = Participant.GenderType.Other;
+                        }
+
                         temp.BirthDate = reader.GetDateTime(5);
                         participants.Add(temp);
                     }
