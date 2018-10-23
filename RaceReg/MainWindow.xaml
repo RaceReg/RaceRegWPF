@@ -37,6 +37,13 @@
                                   ToolTipDescription="Add a new tab to view meet participants."
                                   Command="{Binding AddParticipantView}"/>
                 </RibbonGroup>
+                <RibbonGroup Header="Refresh">
+                    <RibbonButton Label="Refresh Items"
+                                  LargeImageSource="/Resources/refresh.png"
+                                  ToolTipTitle="Refresh RaceReg Items"
+                                  ToolTipDescription="Refresh all meet and participant information from the RaceReg servers."
+                                  Command="{Binding RefreshItems}"/>
+                </RibbonGroup>
             </RibbonTab>
         </Ribbon>
 

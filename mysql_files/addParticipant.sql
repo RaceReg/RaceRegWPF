@@ -2,10 +2,10 @@
 
 INSERT INTO Participant(firstname, lastname, affiliationid, gender, birthdate, active) VALUES
 (
-	'Dakota',
-	'Dakota',
+	'Eliza',
+	'Checketts',
 	2,
 	'm',
-	'1999-11-23',
+	'1997-12-01',
 	1
 )

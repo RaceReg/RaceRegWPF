@@ -100,17 +100,33 @@ namespace RaceReg.ViewModel
             }
             ));
 
+        private RelayCommand refreshItems;
+        public RelayCommand RefreshItems => refreshItems ?? (refreshItems = new RelayCommand(
+            () =>
+            {
+                QueryDatabase();
+            }
+            ));
+
+        
+
         public ObservableCollection<Affiliation> Affiliations
         {
             get;
             set;
         }
 
-
+        private ObservableCollection<Participant> participants;
         public ObservableCollection<Participant> Participants
         {
-            get;
-            set;
+            get
+            {
+                return participants;
+            }
+            set
+            {
+                participants = value;
+            }
         }
 
         private Participant _selectedParticipant;
