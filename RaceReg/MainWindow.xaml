@@ -64,7 +64,6 @@
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
-
     </DockPanel>
     <!--
     <StackPanel>

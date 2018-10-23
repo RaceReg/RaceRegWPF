@@ -8,9 +8,9 @@ namespace RaceReg.Model
 {
     public class Affiliation
     {
-        private int _id;
-        private string _name;
-        private string _abbreviation;
+        //private int _id;
+        //private string _name;
+        //private string _abbreviation;
 
         public int Id { get; set; }
         public string Name { get; set; }

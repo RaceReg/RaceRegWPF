@@ -28,6 +28,7 @@
             <RowDefinition Style="{StaticResource EntryGridRow}" />
             <RowDefinition Style="{StaticResource EntryGridRow}" />
             <RowDefinition Height="2*" />
+            <RowDefinition Style="{StaticResource EntryGridRow}" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0"
@@ -46,13 +47,41 @@
                  Grid.Row="1"
                  Style="{StaticResource EntryFieldNormal}"
                  Text="{Binding participant.LastName, ValidatesOnDataErrors=True}"/>
-        <ComboBox Grid.Column="1"
+        <TextBlock Grid.Column="0"
+               Grid.Row="2"
+               Style="{StaticResource EntryFieldLabelNormal}"
+               Text="Affiliation:" />
+        <ComboBox Style="{StaticResource EntryComboBoxNormal}"
+                  Grid.Column="1"
                   Grid.Row="2" 
-                  Width="100" 
                   ItemsSource="{Binding affiliations}" 
                   SelectedValue="{Binding participant.Affiliation}" 
                   SelectedValuePath="Content">
         </ComboBox>
+        <TextBlock Grid.Column="0"
+               Grid.Row="3"
+               Style="{StaticResource EntryFieldLabelNormal}"
+               Text="Gender:" />
+        <ComboBox Style="{StaticResource EntryComboBoxNormal}"
+                  Grid.Column="1"
+                  Grid.Row="3" 
+                  ItemsSource="{Binding GenderTypes}" 
+                  SelectedValue="{Binding participant.Gender}" 
+                  SelectedValuePath="Content">
+        </ComboBox>
+        <TextBlock Grid.Column="0"
+               Grid.Row="4"
+               Style="{StaticResource EntryFieldLabelNormal}"
+               Text="Birth Date:" />
+        <Calendar Grid.Column="1"
+                  Grid.Row="4"
+                  SelectedDate="{Binding participant.BirthDate}">
+        </Calendar>
+        <Button Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Grid.Row="5"
+                Content="Save New Racer"
+                />
     </Grid>
     
     

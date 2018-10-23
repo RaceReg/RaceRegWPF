@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,14 +10,18 @@ namespace RaceReg.Model
 {
     public class Database : IRaceRegDB
     {
-        public async Task<IEnumerable<Participant>> RefreshParticipants()
+        public async Task<IEnumerable<Participant>> RefreshParticipants(ObservableCollection<Affiliation> affiliations)
         {
-            IEnumerable<Affiliation> affiliations = await RefreshAffiliations();
+            //var getAffiliations = RefreshAffiliations() as Task<IEnumerable<Affiliation>>;
+            //await Task.WhenAll(getAffiliations);
+            //IEnumerable<Affiliation> affiliations = new ObservableCollection<Affiliation>(getAffiliations.Result);
+
             List<Participant> participants = new List<Participant>();
             string getParticipantsQuery = "SELECT * FROM " + Constants.PARTICIPANT + " WHERE active = 1;";
 
             using (var connection = new MySqlConnection(Constants.CONNECTION_STRING))
             {
+                await connection.OpenAsync();
                 using (var cmd = new MySqlCommand(getParticipantsQuery, connection))
                 using (var reader = await cmd.ExecuteReaderAsync())
                     while (await reader.ReadAsync())
@@ -48,10 +53,10 @@ namespace RaceReg.Model
             List<Affiliation> affiliations = new List<Affiliation>();
             string getAffiliationsQuery = "SELECT * FROM " + Constants.AFFILIATION + " WHERE active = 1;";
 
-            using (var connection = new MySqlConnection(Constants.CONNECTION_STRING))
+            using (var connection1 = new MySqlConnection(Constants.CONNECTION_STRING))
             {
-                await connection.OpenAsync();
-                using (var cmd = new MySqlCommand(getAffiliationsQuery, connection))
+                await connection1.OpenAsync();
+                using (var cmd = new MySqlCommand(getAffiliationsQuery, connection1))
                 using (var reader = await cmd.ExecuteReaderAsync())
                     while (await reader.ReadAsync())
                     {

@@ -8,12 +8,8 @@ namespace RaceReg.Model
 {
     public interface IRaceRegDB
     {
-        List<Affiliation> GetAffiliations();
-        bool SaveAffiliation(int Id);
-        bool SaveAffiliation();
-
-        List<Participant> GetParticipants();
-        bool SaveParticipant(int Id);
-        bool SaveParticipant();
+        Task<IEnumerable<Participant>> RefreshParticipants(System.Collections.ObjectModel.ObservableCollection<Affiliation> affiliations);
+        Task<IEnumerable<Affiliation>> RefreshAffiliations();
+        Task<string> Save(Participant updatedParticipant);
     }
 }

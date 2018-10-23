@@ -25,13 +25,13 @@ namespace RaceReg.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private IRaceRegDB _updateParticipantService;
+        private IRaceRegDB _database;
         private IDialogService _dialogService;
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel(IRaceRegDB updateParticipantService,
+        public MainViewModel(IRaceRegDB RaceRegDB,
             IDialogService dialogService)
         {
             ////if (IsInDesignMode)
@@ -45,11 +45,21 @@ namespace RaceReg.ViewModel
 
             ChildViewModels = new ObservableCollection<ChildControl>();
 
-            _updateParticipantService = updateParticipantService;
+            _database = RaceRegDB;
             _dialogService = dialogService;
 
-            Affiliations = new ObservableCollection<Affiliation>(_updateParticipantService.RefreshAffiliations().Result);
-            Participants = new ObservableCollection<Participant>(_updateParticipantService.RefreshParticipants().Result);
+            QueryDatabase();
+        }
+
+        public void QueryDatabase()
+        {
+            var getAffiliations = _database.RefreshAffiliations();
+            getAffiliations.Wait();
+            Affiliations = new ObservableCollection<Affiliation>(getAffiliations.Result);
+
+            var getParticipants = _database.RefreshParticipants(Affiliations);
+            getParticipants.Wait();
+            Participants = new ObservableCollection<Participant>(getParticipants.Result);
         }
 
         //Default constructor
@@ -85,17 +95,12 @@ namespace RaceReg.ViewModel
         public RelayCommand AddParticipantView => addParticipantView ?? (addParticipantView = new RelayCommand(
             () =>
             {
-                ChildViewModels.Add(new ChildControl("Participant Editor", new ParticipantViewModel()));
+                ParticipantViewModel participantEditorViewModel = new ParticipantViewModel();
+                participantEditorViewModel.Affiliations = this.Affiliations;
+                ChildViewModels.Add(new ChildControl("Participant Editor", participantEditorViewModel));
                 selectedChildViewModel = ChildViewModels.Last();
             }
             ));
-
-
-
-
-
-
-
 
         public ObservableCollection<Affiliation> Affiliations
         {
@@ -128,34 +133,7 @@ namespace RaceReg.ViewModel
                 RaisePropertyChanged("SelectedParticipant");
             }
         }
-
-        private RelayCommand _refreshParticipantCommand;
-        public RelayCommand RefreshParticipantCommand
-        {
-            get
-            {
-                return _refreshParticipantCommand ?? (_refreshParticipantCommand = new RelayCommand(
-                    async () =>
-                    {
-                        await Refresh();
-                    }
-                    ));
-            }
-        }
-
-       
-
-        private async Task Refresh()
-        {
-            Participants.Clear();
-
-            var participants = await _updateParticipantService.RefreshAffiliations();
-
-            foreach(var participant in participants)
-            {
-                Participants.Add(participant);
-            }
-        }
+     
 
         //public event PropertyChangedEventHandler PropertyChanged;
         //protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
