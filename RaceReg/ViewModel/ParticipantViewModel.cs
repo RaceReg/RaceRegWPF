@@ -11,7 +11,18 @@ namespace RaceReg.ViewModel
 {
     public class ParticipantViewModel : ViewModelBase
     {
-        public Participant participant;
+        private Participant participant;
+        public Participant Participant
+        {
+            get
+            {
+                return participant;
+            }
+            set
+            {
+                Set(ref participant, value);
+            }
+        }
         public ObservableCollection<Affiliation> affiliations;
         public ObservableCollection<Affiliation> Affiliations
         {

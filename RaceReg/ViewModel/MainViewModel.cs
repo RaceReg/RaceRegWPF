@@ -51,15 +51,13 @@ namespace RaceReg.ViewModel
             QueryDatabase();
         }
 
-        public void QueryDatabase()
+        public async void QueryDatabase()
         {
-            var getAffiliations = _database.RefreshAffiliations();
-            getAffiliations.Wait();
-            Affiliations = new ObservableCollection<Affiliation>(getAffiliations.Result);
+            var getAffiliations = await _database.RefreshAffiliations().ConfigureAwait(true);
+            Affiliations = new ObservableCollection<Affiliation>(getAffiliations);
 
-            var getParticipants = _database.RefreshParticipants(Affiliations);
-            getParticipants.Wait();
-            Participants = new ObservableCollection<Participant>(getParticipants.Result);
+            var getParticipants = await _database.RefreshParticipants().ConfigureAwait(true);
+            Participants = new ObservableCollection<Participant>(getParticipants);
         }
 
         //Default constructor
@@ -98,7 +96,7 @@ namespace RaceReg.ViewModel
                 ParticipantViewModel participantEditorViewModel = new ParticipantViewModel();
                 participantEditorViewModel.Affiliations = this.Affiliations;
                 ChildViewModels.Add(new ChildControl("Participant Editor", participantEditorViewModel));
-                selectedChildViewModel = ChildViewModels.Last();
+                SelectedChildViewModel = ChildViewModels.Last();
             }
             ));
 

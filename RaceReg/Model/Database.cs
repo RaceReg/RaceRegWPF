@@ -10,11 +10,9 @@ namespace RaceReg.Model
 {
     public class Database : IRaceRegDB
     {
-        public async Task<IEnumerable<Participant>> RefreshParticipants(ObservableCollection<Affiliation> affiliations)
+        public async Task<IEnumerable<Participant>> RefreshParticipants()
         {
-            //var getAffiliations = RefreshAffiliations() as Task<IEnumerable<Affiliation>>;
-            //await Task.WhenAll(getAffiliations);
-            //IEnumerable<Affiliation> affiliations = new ObservableCollection<Affiliation>(getAffiliations.Result);
+            var affiliations = new ObservableCollection<Affiliation>( await RefreshAffiliations());
 
             List<Participant> participants = new List<Participant>();
             string getParticipantsQuery = "SELECT * FROM " + Constants.PARTICIPANT + " WHERE active = 1;";

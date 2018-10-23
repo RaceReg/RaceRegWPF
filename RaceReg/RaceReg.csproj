@@ -96,9 +96,6 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ParticipantViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Compile Include="View\AllParticipantsView.xaml.cs">
-      <DependentUpon>AllParticipantsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\ParticipantView.xaml.cs">
       <DependentUpon>ParticipantView.xaml</DependentUpon>
     </Compile>
@@ -117,10 +114,6 @@
     <Page Include="Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\AllParticipantsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\ParticipantView.xaml">
       <SubType>Designer</SubType>
