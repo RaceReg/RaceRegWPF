@@ -35,7 +35,7 @@
                                   LargeImageSource="/Resources/femalerunner.png"
                                   ToolTipTitle="Add Participant View Screen."
                                   ToolTipDescription="Add a new tab to view meet participants."
-                                  Command="{Binding AddParticipantView}"/>
+                                  Command="{Binding AddAllParticipantsView}"/>
                 </RibbonGroup>
                 <RibbonGroup Header="Refresh">
                     <RibbonButton Label="Refresh Items"
@@ -66,21 +66,14 @@
                             <DataTemplate DataType="{x:Type vm:ParticipantViewModel}">
                                 <view:ParticipantView />
                             </DataTemplate>
+                            <DataTemplate DataType="{x:Type vm:AllParticipantViewModel}">
+                                <view:AllParticipantView />
+                            </DataTemplate>
                         </ContentControl.Resources>
                     </ContentControl>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
-
-        <DataGrid ItemsSource="{Binding Participants}" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" />
-                <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
-                <DataGridTextColumn Header="Affiliation" Binding="{Binding Affiliation.Abbreviation}" />
-                <DataGridTextColumn Header="Gender" Binding="{Binding Gender}" />
-                <DataGridTextColumn Header="Birth Date" Binding="{Binding BirthDate}" />
-            </DataGrid.Columns>
-        </DataGrid>
     </DockPanel>
     <!--
     <StackPanel>

@@ -92,10 +92,14 @@
     <Compile Include="Model\Participant.cs" />
     <Compile Include="Model\Database.cs" />
     <Compile Include="Model\IRaceRegDB.cs" />
+    <Compile Include="ViewModel\AllParticipantViewModel.cs" />
     <Compile Include="ViewModel\ChildControl.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ParticipantViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\AllParticipantView.xaml.cs">
+      <DependentUpon>AllParticipantView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ParticipantView.xaml.cs">
       <DependentUpon>ParticipantView.xaml</DependentUpon>
     </Compile>
@@ -112,6 +116,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AllParticipantView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

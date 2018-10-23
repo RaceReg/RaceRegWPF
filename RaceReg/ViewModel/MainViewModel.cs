@@ -100,6 +100,19 @@ namespace RaceReg.ViewModel
             }
             ));
 
+        private RelayCommand addAllParticipantsView;
+        public RelayCommand AddAllParticipantView => addAllParticipantsView ?? (addAllParticipantsView = new RelayCommand(
+            () =>
+            {
+                AllParticipantViewModel allParticipantEditorViewModel = new AllParticipantViewModel();
+                allParticipantEditorViewModel.Affiliations = this.Affiliations;
+                allParticipantEditorViewModel.Participants = this.Participants;
+
+                ChildViewModels.Add(new ChildControl("All Participants", allParticipantEditorViewModel));
+                SelectedChildViewModel = ChildViewModels.Last();
+            }
+            ));
+
         private RelayCommand refreshItems;
         public RelayCommand RefreshItems => refreshItems ?? (refreshItems = new RelayCommand(
             () =>
@@ -110,24 +123,9 @@ namespace RaceReg.ViewModel
 
         
 
-        public ObservableCollection<Affiliation> Affiliations
-        {
-            get;
-            set;
-        }
+        public ObservableCollection<Affiliation> Affiliations { get; set; }
 
-        private ObservableCollection<Participant> participants;
-        public ObservableCollection<Participant> Participants
-        {
-            get
-            {
-                return participants;
-            }
-            set
-            {
-                participants = value;
-            }
-        }
+        public ObservableCollection<Participant> Participants { get; set; }
 
         private Participant _selectedParticipant;
         public Participant SelectedParticipant
