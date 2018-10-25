@@ -48,16 +48,29 @@ namespace RaceReg.ViewModel
             _database = RaceRegDB;
             _dialogService = dialogService;
 
+            Affiliations = new ObservableCollection<Affiliation>();
+            Participants = new ObservableCollection<Participant>();
             QueryDatabase();
         }
 
         public async void QueryDatabase()
         {
             var getAffiliations = await _database.RefreshAffiliations().ConfigureAwait(true);
+            Affiliations.Clear();
+            
+            foreach(Affiliation affiliation in getAffiliations)
+            {
+                Affiliations.Add(affiliation);
+            }
             Affiliations = new ObservableCollection<Affiliation>(getAffiliations);
 
             var getParticipants = await _database.RefreshParticipants().ConfigureAwait(true);
-            Participants = new ObservableCollection<Participant>(getParticipants);
+            Participants.Clear();
+
+            foreach(Participant participant in getParticipants)
+            {
+                Participants.Add(participant);
+            }
         }
 
         //Default constructor
